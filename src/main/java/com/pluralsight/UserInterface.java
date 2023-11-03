@@ -9,9 +9,9 @@ import static com.pluralsight.DealershipFileManager.*;
 public class UserInterface {
     public static Dealership newDealership;
     public static Scanner input = new Scanner(System.in);
-    public void display(){
+    public static void display(){
         initialize();
-        System.out.print("Welcome to E & S Used Cars! \nPlease enter a menu option (1 - 9):\n\t1)Sort Cars by Price\n\t2)Sort Cars by Make & Model\n\t3)Sort Cars by Year\n\t4)Sort Cars by Color\n\t5)Sort Cars by Mileage\n\t6)Sort Cars by Vehicle Type\n\t7)Retrieve All Available Vehicles\n\t8)Add a Vehicle to Dealership\n\t9)Remove a Vehicle from Dealership\nUser Input: ");
+        System.out.print("Welcome to E & S Used Cars! \nPlease enter a menu option (1 - 10):\n\t1)Sort Cars by Price\n\t2)Sort Cars by Make & Model\n\t3)Sort Cars by Year\n\t4)Sort Cars by Color\n\t5)Sort Cars by Mileage\n\t6)Sort Cars by Vehicle Type\n\t7)Retrieve All Available Vehicles\n\t8)Add a Vehicle to Dealership\n\t9)Remove a Vehicle from Dealership\n\t10)Quit App\nUser Input: ");
         String userInput = input.nextLine();
         switch (userInput){
             case "1":
@@ -41,57 +41,62 @@ public class UserInterface {
             case "9":
                 processRemoveVehicleRequest();
                 break;
+            case "10":
+                System.out.println("\nThank you, see you again soon! ");
+                break;
             default:
-                System.out.println("Please enter a valid option (1-9).");
+                System.out.println("\nPlease enter a valid option (1-10).\n");
                 display();
                 break;
         }
     }
 
-    private void initialize(){
+    private static void initialize(){
         newDealership = getDealership();
     }
 
-    public void processGetVehiclesByPriceRequest(){
+    public static void processGetVehiclesByPriceRequest(){
 
     }
 
-    public void processGetVehiclesByMakeModelRequest(){
+    public static void processGetVehiclesByMakeModelRequest(){
 
     }
 
-    public void processGetVehiclesByYearRequest(){
+    public static void processGetVehiclesByYearRequest(){
 
     }
 
-    public void processGetVehiclesByColorRequest(){
+    public static void processGetVehiclesByColorRequest(){
 
     }
 
-    public void processGetVehiclesByMileageRequest(){
+    public static void processGetVehiclesByMileageRequest(){
 
     }
 
-    public void processGetVehiclesByTypeRequest(){
+    public static void processGetVehiclesByTypeRequest(){
 
     }
 
-    public void processGetAllVehiclesRequest(){
-        System.out.println("List of All Vehicles: ");
+    public static void processGetAllVehiclesRequest(){
+        System.out.println("\nList of All Vehicles: ");
         displayVehicles(getAllVehicles());
     }
 
-    public void processAddVehicleRequest(){
+    public static void processAddVehicleRequest(){
 
     }
 
-    public void processRemoveVehicleRequest(){
+    public static void processRemoveVehicleRequest(){
 
     }
 
-    public void displayVehicles(ArrayList<Vehicle> vehicleList){
+    public static void displayVehicles(ArrayList<Vehicle> vehicleList){
         for(Vehicle vehicle: vehicleList){
-            System.out.println("VIN: " + vehicleList.get(0) + " | Year: " + vehicleList.get(1) + " | Make: " + vehicleList.get(2) + " | Model: " + vehicleList.get(3) + " | Vehicle Type: " + vehicleList.get(4) + " | Color: " + vehicleList.get(5) + " | Odometer: " + vehicleList.get(6) + " | Price: " + vehicleList.get(7) + " |");
+            System.out.println("VIN: " + vehicle.getVin() + " | Year: " + vehicle.getYear() + " | Make: " + vehicle.getMake() + " | Model: " + vehicle.getModel() + " | Vehicle Type: " + vehicle.getVehicleType() + " | Color: " + vehicle.getColor() + " | Odometer: " + vehicle.getOdometer() + " | Price: " + vehicle.getPrice() + " |");
         }
+        System.out.println("\nReturning to the main menu...\n");
+        display();
     }
 }
