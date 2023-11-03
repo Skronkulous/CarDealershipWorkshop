@@ -12,39 +12,43 @@ public class Dealership {
         this.phone = phone;
     }
 
-    public ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
+    public static ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
         return null;
     }
 
-    public ArrayList<Vehicle> getVehiclesByMakeModel(String make, String model){
+    public static ArrayList<Vehicle> getVehiclesByMakeModel(String make, String model){
         return null;
     }
 
-    public ArrayList<Vehicle> getVehiclesByYear(int min, int max){
+    public static ArrayList<Vehicle> getVehiclesByYear(int min, int max){
         return null;
     }
 
-    public ArrayList<Vehicle> getVehiclesByColor(String color){
+    public static ArrayList<Vehicle> getVehiclesByColor(String color){
         return null;
     }
 
-    public ArrayList<Vehicle> getVehiclesByMileage(int min, int max){
+    public static ArrayList<Vehicle> getVehiclesByMileage(int min, int max){
         return null;
     }
 
-    public ArrayList<Vehicle> getVehiclesByType(String vehicleType){
+    public static ArrayList<Vehicle> getVehiclesByType(String vehicleType){
         return null;
     }
 
-    public ArrayList<Vehicle> getAllVehicles(){
-        return null;
+    public static ArrayList<Vehicle> getAllVehicles(){
+        ArrayList<Vehicle> newVehicleList = new ArrayList<Vehicle>();
+        for(Vehicle vehicle: inventory){
+            newVehicleList.add(vehicle);
+        }
+        return newVehicleList;
     }
 
-    public void addVehicle(Vehicle newVehicle){
+    public static void addVehicle(Vehicle newVehicle){
 
     }
 
-    public void removeVehicle(Vehicle newVehicle){
+    public static void removeVehicle(Vehicle newVehicle){
 
     }
 }

@@ -6,7 +6,7 @@ import java.io.FileReader;
 import static com.pluralsight.Dealership.inventory;
 
 public class DealershipFileManager {
-    public static void getDealership(){
+    public static Dealership getDealership(){
         try{
             FileReader fr = new FileReader("src/main/resources/inventory.csv");
             BufferedReader br = new BufferedReader(fr);
@@ -28,10 +28,12 @@ public class DealershipFileManager {
             }
             fr.close();
             br.close();
+            return newDealership;
         }
         catch(Exception fileError){
             System.out.println("Something has went wrong with the file path. Please update and try again.");
             fileError.printStackTrace();
+            return null;
         }
     }
 
