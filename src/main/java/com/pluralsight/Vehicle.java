@@ -1,9 +1,11 @@
+package com.pluralsight;
+
 public class Vehicle {
     public double price;
     public int vin, year, odometer;
     public String make, model, vehicleType, color;
 
-    public Vehicle(double price, int vin, int year, int odometer, String make, String model, String vehicleType, String color) {
+    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.price = price;
         this.vin = vin;
         this.year = year;

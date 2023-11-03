@@ -1,10 +1,12 @@
+package com.pluralsight;
+
 import java.util.ArrayList;
 
 public class Dealership {
     public String name, address, phone;
-    public ArrayList<Vehicle> inventory = new ArrayList<Vehicle>();
+    public static ArrayList<Vehicle> inventory = new ArrayList<Vehicle>();
 
-    public Dealership(String name, String address, String phone) {
+    public Dealership(String name, String address, String phone){
         this.name = name;
         this.address = address;
         this.phone = phone;
