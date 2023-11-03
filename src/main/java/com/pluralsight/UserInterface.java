@@ -185,7 +185,7 @@ public class UserInterface {
             double newPrice = input.nextDouble();
             Vehicle newVehicle = new Vehicle(newVim, newYear, newMake, newModel, newVehicleType, newColor, newOdometer, newPrice);
             addVehicle(newVehicle);
-            System.out.println("\nYour new vehicle has been successfully added!\n\nReturning to main menu...");
+            System.out.println("\nYour new vehicle has been successfully added!\n\nReturning to main menu...\n");
             display();
 
         }
@@ -203,7 +203,7 @@ public class UserInterface {
             int removeInput = input.nextInt();
             inventory.remove(removeInput-1);
             saveDealership();
-            System.out.println("\nYour new vehicle has been successfully removed!\n\nReturning to main menu...");
+            System.out.println("\nYour new vehicle has been successfully removed!\n\nReturning to main menu...\n");
             display();
         }
         catch (Exception inputError){
