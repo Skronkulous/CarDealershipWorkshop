@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import static com.pluralsight.DealershipFileManager.saveDealership;
 import static com.pluralsight.UserInterface.*;
 
 public class WorkshopApp {

@@ -1,9 +1,12 @@
 package com.pluralsight;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import static com.pluralsight.Dealership.inventory;
+import static com.pluralsight.WorkshopApp.newDealership;
 
 public class DealershipFileManager {
     public static Dealership getDealership(){
@@ -38,6 +41,21 @@ public class DealershipFileManager {
     }
 
     public static void saveDealership(){
-
+        try{
+            FileWriter fw = new FileWriter("src/main/resources/inventory.csv");
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(newDealership.getName() + "|" + newDealership.getAddress() + "|" + newDealership.getPhone());
+            bw.newLine();
+            for(Vehicle vehicle: inventory){
+                String vehicleWrite = (vehicle.getVin() + "|" + vehicle.getYear() + "|" + vehicle.getMake() + "|" + vehicle.getModel() + "|" + vehicle.getVehicleType() + "|" + vehicle.getColor() + "|" + vehicle.getOdometer() + "|" + vehicle.getPrice());
+                bw.write(vehicleWrite);
+                bw.newLine();
+            }
+            bw.close();
+        }
+        catch(Exception fileError){
+            System.out.println("There seems to be an issue with the file path. Please update and try again.");
+            fileError.printStackTrace();
+        }
     }
 }

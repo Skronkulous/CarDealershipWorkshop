@@ -2,6 +2,8 @@ package com.pluralsight;
 
 import java.util.ArrayList;
 
+import static com.pluralsight.DealershipFileManager.saveDealership;
+
 public class Dealership {
     public String name, address, phone;
     public static ArrayList<Vehicle> inventory = new ArrayList<Vehicle>();
@@ -10,6 +12,18 @@ public class Dealership {
         this.name = name;
         this.address = address;
         this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public static ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
@@ -81,10 +95,7 @@ public class Dealership {
     }
 
     public static void addVehicle(Vehicle newVehicle){
-
-    }
-
-    public static void removeVehicle(Vehicle newVehicle){
-
+        inventory.add(newVehicle);
+        saveDealership();
     }
 }
