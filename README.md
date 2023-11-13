@@ -15,7 +15,7 @@
     - [ContractFileManager](#contractfilemanager)
     - [LeaseContract](#leasecontract)
     - [SalesContract](#salescontract)
-- [Functionality](#funcionality)
+- [Functionality](#functionality)
 
 
 
@@ -72,6 +72,7 @@ In this Exercise, we utilized collaborative efforts in constructing an applicati
   - Calculates total price and monthly payment.
 
 ## Functionality
+
 ### **Welcome Screen:**
 
 Welcome to E & S Used Cars!
