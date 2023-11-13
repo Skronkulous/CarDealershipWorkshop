@@ -1,6 +1,9 @@
 package com.pluralsight;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import static com.pluralsight.WorkshopApp.*;
@@ -9,8 +12,11 @@ import static com.pluralsight.DealershipFileManager.*;
 
 public class UserInterface {
     public static Scanner input = new Scanner(System.in);
+    public static Date today = new Date();
+    public static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+    public static DecimalFormat df = new DecimalFormat("#.00");
     public static void display(){
-        System.out.print("Welcome to E & S Used Cars! \nPlease enter a menu option (1 - 10):\n\t1)Sort Cars by Price\n\t2)Sort Cars by Make & Model\n\t3)Sort Cars by Year\n\t4)Sort Cars by Color\n\t5)Sort Cars by Mileage\n\t6)Sort Cars by Vehicle Type\n\t7)Retrieve All Available Vehicles\n\t8)Add a Vehicle to Dealership\n\t9)Remove a Vehicle from Dealership\n\t10)Quit App\nUser Input: ");
+        System.out.print("Welcome to E & S Used Cars! \nPlease enter a menu option (1 - 10):\n\t1)Sort Cars by Price\n\t2)Sort Cars by Make & Model\n\t3)Sort Cars by Year\n\t4)Sort Cars by Color\n\t5)Sort Cars by Mileage\n\t6)Sort Cars by Vehicle Type\n\t7)Retrieve All Available Vehicles\n\t8)Add a Vehicle to Dealership\n\t9)Remove a Vehicle from Dealership\n\t10)Purchase A New Vehicle\n\t11)Lease A New Vehicle\n\t12)Quit App\nUser Input: ");
         String userInput = input.nextLine();
         if(userInput.isEmpty()){
             userInput = input.nextLine();
@@ -44,6 +50,12 @@ public class UserInterface {
                 processRemoveVehicleRequest();
                 break;
             case "10":
+                processNewSalesContractRequest();
+                break;
+            case "11":
+                processNewLeaseContractRequest();
+                break;
+            case "12":
                 System.out.println("\nThank you, see you again soon! ");
                 break;
             default:
@@ -209,6 +221,55 @@ public class UserInterface {
             System.out.println("\nThere has been an input error. Please review your chosen vehicle number and try again. ");
             display();
         }
+    }
+
+    public static void processNewSalesContractRequest(){
+        try{
+            System.out.println("Sales Contract Form:");
+            System.out.print("Please enter your first and last name (Ex. John Smith): ");
+            String chosenName = input.nextLine();
+            System.out.print("Please enter your email (Ex. johnsmithcars@gmail.com): ");
+            String chosenEmail = input.nextLine();
+            System.out.print("Please enter the VIN of the vehicle you would like to begin a contract with (Ex. 12345): ");
+            int chosenVin = input.nextInt();
+            input.nextLine();
+            String chosenDate = dateFormatter.format(today);
+            SalesContract newSalesContract = new SalesContract(chosenDate, chosenName, chosenEmail, getVehicleByVin(chosenVin), false);
+            if(newSalesContract.getVehicleSold().getModel().equalsIgnoreCase("null")){
+                System.out.println("\nUnfortunately we could not find a vehicle with your chosen VIN. Please review your information and try again!");
+                System.out.println("\nNow returning to the main menu...\n");
+                display();
+            }
+            else{
+                System.out.print("Will you be financing this vehicle today? (Y or N): ");
+                String yN = (input.nextLine()).toLowerCase();
+                if(yN.equals("y")){
+                    newSalesContract.setFinanced(true);
+                    System.out.println("\nYour Total Cost: $" + newSalesContract.getTotalPrice() + " | Your (Estimated) Monthly Payment: $" + newSalesContract.getMonthlyPayment());
+                    System.out.println("Your contract has been recorded! Thank you for financing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
+                    System.out.println("\nNow returning to the main menu...");
+                    display();
+                }
+                else if(yN.equals("n")){
+                    System.out.println("\nYour Total Cost: $" + newSalesContract.getTotalPrice());
+                    System.out.println("Your contract has been recorded! Thank you for purchasing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
+                    System.out.println("\nNow returning to the main menu...");
+                    display();
+                }
+                else{
+                    System.out.println("Please enter ('Y' or 'N') and try again.");
+                    processNewSalesContractRequest();
+                }
+            }
+        }
+        catch(Exception inputError){
+            System.out.println("\nThere has been an input error. Please review your chosen info and try again. ");
+            display();
+        }
+    }
+
+    public static void processNewLeaseContractRequest(){
+
     }
 
     public static void displayVehicles(ArrayList<Vehicle> vehicleList){

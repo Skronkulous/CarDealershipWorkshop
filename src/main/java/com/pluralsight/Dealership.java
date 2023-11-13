@@ -26,6 +26,17 @@ public class Dealership {
         return phone;
     }
 
+    public static Vehicle getVehicleByVin(int vin){
+        Vehicle newVehicle = new Vehicle(0, 0, "null", "null", "null", "null", 0, 0);
+        for(Vehicle vehicle: inventory){
+            if(vehicle.getVin() == vin){
+                newVehicle = vehicle;
+                break;
+            }
+        }
+        return newVehicle;
+    }
+
     public static ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
         ArrayList<Vehicle> newVehicleList = new ArrayList<Vehicle>();
         for(Vehicle vehicle: inventory){
