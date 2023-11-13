@@ -1,11 +1,14 @@
 package com.pluralsight;
 
+import java.rmi.dgc.Lease;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import static com.pluralsight.Contract.contractList;
+import static com.pluralsight.ContractFileManager.saveContract;
 import static com.pluralsight.WorkshopApp.*;
 import static com.pluralsight.Dealership.*;
 import static com.pluralsight.DealershipFileManager.*;
@@ -13,7 +16,7 @@ import static com.pluralsight.DealershipFileManager.*;
 public class UserInterface {
     public static Scanner input = new Scanner(System.in);
     public static Date today = new Date();
-    public static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+    public static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
     public static DecimalFormat df = new DecimalFormat("#.00");
     public static void display(){
         System.out.print("Welcome to E & S Used Cars! \nPlease enter a menu option (1 - 10):\n\t1)Sort Cars by Price\n\t2)Sort Cars by Make & Model\n\t3)Sort Cars by Year\n\t4)Sort Cars by Color\n\t5)Sort Cars by Mileage\n\t6)Sort Cars by Vehicle Type\n\t7)Retrieve All Available Vehicles\n\t8)Add a Vehicle to Dealership\n\t9)Remove a Vehicle from Dealership\n\t10)Purchase A New Vehicle\n\t11)Lease A New Vehicle\n\t12)Quit App\nUser Input: ");
@@ -75,7 +78,7 @@ public class UserInterface {
             double minPrice = input.nextDouble();
             System.out.print("\nPlease enter the maximum price for your search: $");
             double maxPrice = input.nextDouble();
-            System.out.println("\nList of All Vehicles between $" + minPrice + " - $" + maxPrice + ":");
+            System.out.println("\nList of All Vehicles between $" + df.format(minPrice) + " - $" + df.format(maxPrice) + ":");
             displayVehicles(getVehiclesByPrice(minPrice, maxPrice));
             System.out.println("\nReturning to the main menu...\n");
             display();
@@ -244,17 +247,37 @@ public class UserInterface {
                 System.out.print("Will you be financing this vehicle today? (Y or N): ");
                 String yN = (input.nextLine()).toLowerCase();
                 if(yN.equals("y")){
-                    newSalesContract.setFinanced(true);
-                    System.out.println("\nYour Total Cost: $" + newSalesContract.getTotalPrice() + " | Your (Estimated) Monthly Payment: $" + newSalesContract.getMonthlyPayment());
-                    System.out.println("Your contract has been recorded! Thank you for financing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
-                    System.out.println("\nNow returning to the main menu...");
-                    display();
+                    if(newSalesContract.getVehicleSold().isAvailable()){
+                        newSalesContract.setFinanced(true);
+                        System.out.println("\nYour Total Cost: $" + df.format(newSalesContract.getTotalPrice()) + " | Your (Estimated) Monthly Payment: $" + df.format(newSalesContract.getMonthlyPayment()));
+                        newSalesContract.getVehicleSold().setAvailable(false);
+                        contractList.add(newSalesContract);
+                        saveContract(newSalesContract);
+                        System.out.println("Your contract has been recorded! Thank you for financing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
+                        System.out.println("\nNow returning to the main menu...");
+                        display();
+                    }
+                    else{
+                        System.out.println("\nIt seems that the vehicle you selected was unavailable. Please choose a new vehicle and try again!");
+                        System.out.println("\nNow returning to the main menu...\n");
+                        display();
+                    }
                 }
                 else if(yN.equals("n")){
-                    System.out.println("\nYour Total Cost: $" + newSalesContract.getTotalPrice());
-                    System.out.println("Your contract has been recorded! Thank you for purchasing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
-                    System.out.println("\nNow returning to the main menu...");
-                    display();
+                    if(newSalesContract.getVehicleSold().isAvailable()){
+                        System.out.println("\nYour Total Cost: $" + df.format(newSalesContract.getTotalPrice()));
+                        newSalesContract.getVehicleSold().setAvailable(false);
+                        contractList.add(newSalesContract);
+                        saveContract(newSalesContract);
+                        System.out.println("Your contract has been recorded! Thank you for purchasing through 'E & S', & we hope you enjoy your new " + newSalesContract.getVehicleSold().getYear() + " " + newSalesContract.getVehicleSold().getMake() + " " + newSalesContract.getVehicleSold().getModel() + "!");
+                        System.out.println("\nNow returning to the main menu...");
+                        display();
+                    }
+                    else{
+                        System.out.println("\nIt seems that the vehicle you selected was unavailable. Please choose a new vehicle and try again!");
+                        System.out.println("\nNow returning to the main menu...\n");
+                        display();
+                    }
                 }
                 else{
                     System.out.println("Please enter ('Y' or 'N') and try again.");
@@ -269,7 +292,43 @@ public class UserInterface {
     }
 
     public static void processNewLeaseContractRequest(){
-
+        try {
+            System.out.println("Lease Contract Form:");
+            System.out.print("Please enter your first and last name (Ex. John Smith): ");
+            String chosenName = input.nextLine();
+            System.out.print("Please enter your email (Ex. johnsmithcars@gmail.com): ");
+            String chosenEmail = input.nextLine();
+            System.out.print("Please enter the VIN of the vehicle you would like to begin a contract with (Ex. 12345): ");
+            int chosenVin = input.nextInt();
+            input.nextLine();
+            String chosenDate = dateFormatter.format(today);
+            LeaseContract newLeaseContract = new LeaseContract(chosenDate, chosenName, chosenEmail, getVehicleByVin(chosenVin));
+            if (newLeaseContract.getVehicleSold().getModel().equalsIgnoreCase("null")) {
+                System.out.println("\nUnfortunately we could not find a vehicle with your chosen VIN. Please review your information and try again!");
+                System.out.println("\nNow returning to the main menu...\n");
+                display();
+            }
+            else {
+                if(newLeaseContract.getVehicleSold().isAvailable()){
+                    System.out.println("\nYour Estimated Total Cost: $" + df.format(newLeaseContract.getTotalPrice()) + " | Your (estimated) monthly total: $" + df.format(newLeaseContract.getMonthlyPayment()));
+                    newLeaseContract.getVehicleSold().setAvailable(false);
+                    contractList.add(newLeaseContract);
+                    saveContract(newLeaseContract);
+                    System.out.println("Your contract has been recorded! Thank you for leasing through 'E & S', & we hope you enjoy your new " + newLeaseContract.getVehicleSold().getYear() + " " + newLeaseContract.getVehicleSold().getMake() + " " + newLeaseContract.getVehicleSold().getModel() + "!");
+                    System.out.println("\nNow returning to the main menu...");
+                    display();
+                }
+                else{
+                    System.out.println("\nIt seems that the vehicle you selected was unavailable. Please choose a new vehicle and try again!");
+                    System.out.println("\nNow returning to the main menu...\n");
+                    display();
+                }
+            }
+        }
+            catch(Exception inputError){
+                System.out.println("\nThere has been an input error. Please review your chosen info and try again. ");
+                display();
+            }
     }
 
     public static void displayVehicles(ArrayList<Vehicle> vehicleList){

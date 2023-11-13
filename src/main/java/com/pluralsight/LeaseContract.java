@@ -1,9 +1,11 @@
 package com.pluralsight;
 
+import static com.pluralsight.UserInterface.df;
+
 public class LeaseContract extends Contract{
     double expectedEndValue, leaseFee;
 
-    public LeaseContract(String date, String name, String email, Vehicle vehicleSold, double expectedEndValue, double leaseFee) {
+    public LeaseContract(String date, String name, String email, Vehicle vehicleSold) {
         super(date, name, email, vehicleSold);
         this.expectedEndValue = vehicleSold.getPrice() * .5;
         this.leaseFee = vehicleSold.getPrice() * .07;
@@ -11,12 +13,12 @@ public class LeaseContract extends Contract{
 
     @Override
     public double getTotalPrice(){
-        return (expectedEndValue + leaseFee);
+        return Double.parseDouble(df.format(expectedEndValue + leaseFee));
     }
 
     @Override
     public double getMonthlyPayment(){
-        return ((getTotalPrice() * 1.04) / 36);
+        return Double.parseDouble(df.format((getTotalPrice() * 1.04) / 36));
     }
 
     public double getExpectedEndValue() {

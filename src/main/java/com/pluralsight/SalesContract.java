@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import static com.pluralsight.UserInterface.df;
+
 public class SalesContract extends Contract{
     double salesTax, recordingFee = 100, processingFee = 295;
     boolean isFinanced;
@@ -16,7 +18,7 @@ public class SalesContract extends Contract{
 
     @Override
     public double getTotalPrice(){
-        return (vehicleSold.getPrice() + salesTax + recordingFee + processingFee);
+        return Double.parseDouble(df.format((vehicleSold.getPrice() + salesTax + recordingFee + processingFee)));
     }
 
     @Override
@@ -30,11 +32,7 @@ public class SalesContract extends Contract{
                 monthlyPayment = (getTotalPrice() * 1.0525) / 24;
             }
         }
-        return monthlyPayment;
-    }
-
-    public Vehicle getVehicleSold(){
-        return vehicleSold;
+        return Double.parseDouble(df.format(monthlyPayment));
     }
 
     public double getSalesTax() {

@@ -2,6 +2,7 @@ package com.pluralsight;
 
 public class Vehicle {
     public double price;
+    public boolean available;
     public int vin, year, odometer;
     public String make, model, vehicleType, color;
 
@@ -14,6 +15,7 @@ public class Vehicle {
         this.model = model;
         this.vehicleType = vehicleType;
         this.color = color;
+        this.available = true;
     }
 
     public double getPrice() {
@@ -78,5 +80,13 @@ public class Vehicle {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

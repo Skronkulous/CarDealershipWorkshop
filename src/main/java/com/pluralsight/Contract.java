@@ -1,6 +1,9 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+
 public abstract class Contract {
+    public static ArrayList<Contract> contractList = new ArrayList<Contract>();
     String date, name, email;
     Vehicle vehicleSold;
     double totalPrice, monthlyPayment;
@@ -17,6 +20,10 @@ public abstract class Contract {
     public abstract double getTotalPrice();
 
     public abstract double getMonthlyPayment();
+
+    public Vehicle getVehicleSold(){
+        return vehicleSold;
+    }
 
     public String getDate() {
         return date;
